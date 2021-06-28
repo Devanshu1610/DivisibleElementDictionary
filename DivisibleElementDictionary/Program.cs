@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 namespace DivisibleElementDictionary
 {
@@ -14,21 +14,28 @@ namespace DivisibleElementDictionary
 
                 foreach (int[] array in arrayList)
                 {
-                    for (int i = 0; i < array.Length; i++)
+                    try
                     {
-                        if (array[i] % number == 0)
+                        for (int i = 0; i < array.Length; i++)
                         {
-                            if (!KeyOccuranceDictionary.ContainsKey(array[i]))
-                            {//adding first occurance of divisble number
-                                KeyOccuranceDictionary.Add(array[i], 1);
-                            }
-                            else
+                            if (array[i] % number == 0)
                             {
-                                //adding next occurance of divisble number
-                                KeyOccuranceDictionary[array[i]]++;
+                                if (!KeyOccuranceDictionary.ContainsKey(array[i]))
+                                {//adding first occurance of divisble number
+                                    KeyOccuranceDictionary.Add(array[i], 1);
+                                }
+                                else
+                                {
+                                    //adding next occurance of divisble number
+                                    KeyOccuranceDictionary[array[i]]++;
+                                }
                             }
-                        }
 
+                        }
+                    }
+                    catch(IndexOutOfRangeException io)
+                    {
+                        throw new IndexOutOfRangeException("Error occured in processing " + io.Message);
                     }
 
                 }
@@ -37,8 +44,6 @@ namespace DivisibleElementDictionary
         }
     }
     
-
-
     class Program
     {
 
@@ -50,16 +55,26 @@ namespace DivisibleElementDictionary
             arraycollection.Add(new int[] { 10, 12, 14, 40, 60, 65, 80, 90 });
             arraycollection.Add(new int[] { 3, 4, 65, 40, 40, 30, 20 });
             arraycollection.Add(new int[] { 120, 400, 80, 90, 20, 60 });
-            var resultDictionary =DivisibleDictionary.CreateDivisibleDictionary(arraycollection, 5);
+            Dictionary<int, int> resultDictionary = new Dictionary<int, int>();
+            try
+            {
+               resultDictionary = DivisibleDictionary.CreateDivisibleDictionary(arraycollection, 5);
+                Console.WriteLine("Processing succesful!!");
+              
+            }
+            catch(Exception ex) {
+                Console.WriteLine("Processing failed!! " + ex.Message);
+            
+            }
+
             if (resultDictionary.Count > 0)
             {
                 foreach (var keyValue in resultDictionary)
                 {
                     Console.Write("{0}:{1}, ", keyValue.Key, keyValue.Value);
-                    
+
                 }
             }
-
 
         }
     }
